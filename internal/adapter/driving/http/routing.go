@@ -11,6 +11,7 @@ func (s *Server) endpoints() {
 	authG := s.router.Group("/auth")
 	authG.POST("/sign-up", s.SignUp)
 	authG.POST("/sign-in", s.SignIn)
+	authG.GET("/refresh", s.RefreshTokenPair)
 }
 
 func (s *Server) Ping(c *gin.Context) {
