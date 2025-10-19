@@ -141,4 +141,5 @@ func (s *Server) RefreshTokenPair(c *gin.Context) {
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	})
+	return
 }
