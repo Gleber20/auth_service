@@ -36,7 +36,7 @@ func (s *Server) generateNewTokenPair(userID int) (string, string, error) {
 	}
 
 	refreshToken, err := pkg.GenerateToken(userID,
-		s.cfg.AuthParams.AccessTokenTllMinutes,
+		s.cfg.AuthParams.RefreshTokenTllDays,
 		true)
 	if err != nil {
 		return "", "", err
