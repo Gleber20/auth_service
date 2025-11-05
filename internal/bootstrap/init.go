@@ -1,13 +1,16 @@
 package bootstrap
 
 import (
+	"auth_service/internal/adapter/driven/amqp"
 	http2 "auth_service/internal/adapter/driving/http"
 	"auth_service/internal/config"
 	"auth_service/internal/usecase"
+	"log"
+	"net/http"
+
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
-	"net/http"
 )
 
 func initDB(cfg config.Postgres, name string) (*sqlx.DB, error) {
@@ -40,4 +43,20 @@ func initHTTPService(
 		cfg,
 		uc,
 	)
+}
+
+type Resources struct {
+	AMQPProducer *amqp.Producer
+}
+
+func InitResources(cfg *config.Config) (*Resources, error) {
+	producer, err := amqp.NewProducer(cfg.AMQP_URL, "user-registered")
+	if err != nil {
+		log.Println("⚠️ Failed to initialize AMQP producer:", err)
+		return nil, err
+	}
+
+	return &Resources{
+		AMQPProducer: producer,
+	}, nil
 }

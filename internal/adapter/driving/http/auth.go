@@ -5,13 +5,15 @@ import (
 	"auth_service/internal/errs"
 	"auth_service/pkg"
 	"errors"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type SignUpRequest struct {
 	FullName string `json:"full_name"`
 	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
@@ -38,6 +40,7 @@ func (s *Server) SignUp(c *gin.Context) {
 	if err := s.uc.UserCreator.CreateUser(c, domain.User{
 		FullName: input.FullName,
 		Username: input.Username,
+		Email:    input.Email,
 		Password: input.Password,
 	}); err != nil {
 		s.handleError(c, err)

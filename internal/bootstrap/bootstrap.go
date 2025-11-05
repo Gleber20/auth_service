@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"auth_service/internal/adapter/driven/amqp"
 	"auth_service/internal/adapter/driven/dbstore"
 	"auth_service/internal/config"
 	"auth_service/internal/usecase"
@@ -18,7 +19,11 @@ func initLayers(cfg config.Config) *App {
 	}
 
 	storage := dbstore.New(db)
-	//log.Info("Database connection established")
+
+	producer, err := amqp.NewProducer(cfg.AMQP_URL, "notification_queue")
+	if err != nil {
+		panic(fmt.Errorf("failed to init amqp producer: %w", err))
+	}
 
 	teardown = append(teardown, func() {
 		if err := db.Close(); err != nil {
@@ -27,7 +32,7 @@ func initLayers(cfg config.Config) *App {
 		}
 	})
 
-	uc := usecase.New(cfg, storage)
+	uc := usecase.New(cfg, storage, producer)
 
 	httpSrv := initHTTPService(&cfg, uc)
 

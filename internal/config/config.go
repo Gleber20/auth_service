@@ -11,6 +11,7 @@ type Config struct {
 	HTTPPort   string     `env:"HTTP_PORT" default:"8284"`
 	Postgres   *Postgres  `env:",prefix=POSTGRES_"`
 	AuthParams AuthParams `env:",prefix=JWT_"`
+	AMQP_URL   string     `env:"AMQP_URL"`
 }
 
 type AuthParams struct {
