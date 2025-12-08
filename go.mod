@@ -1,4 +1,4 @@
-module github.com/Gleber20/auth_service
+module auth_service
 
 go 1.24.6
 
