@@ -53,7 +53,10 @@ func (u *UseCase) CreateUser(ctx context.Context, user domain.User) (err error) 
 		Subject:   "Добро пожаловать!",
 		Body:      fmt.Sprintf("Привет, %s! Спасибо за регистрацию!", user.FullName),
 	}
-	_ = u.producer.Publish(ctx, msg)
+	err = u.producer.Publish(ctx, msg)
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	return nil
 }

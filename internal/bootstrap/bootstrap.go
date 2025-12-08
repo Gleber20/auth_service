@@ -20,7 +20,7 @@ func initLayers(cfg config.Config) *App {
 
 	storage := dbstore.New(db)
 
-	producer, err := amqp.NewProducer(cfg.AMQP_URL, "notification_queue")
+	producer, err := amqp.NewProducer(cfg.AMQP_URL, "auth-queue")
 	if err != nil {
 		panic(fmt.Errorf("failed to init amqp producer: %w", err))
 	}
